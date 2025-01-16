@@ -1,24 +1,26 @@
 #include <iostream>
 #include <thread>
 #include <shared_mutex>
+#include <atomic>
 #include <vector>
 #include <chrono>
 
 std::shared_mutex mtx; // Shared mutex
 int shared_resource = 0; // Shared resource that will be modified by writer and will be read by readers
-bool done = false; // To communicate reader threads that writer is done
+std::atomic<bool> done(false); // Atomic flag for better thread safety
 
 void reader(int id)
 {
     while(true)
     {
         // Acquire shared lock
+        // Does not blocks other shared locks but blocks exclusive locks
         std::shared_lock<std::shared_mutex> lock(mtx);
 
         // Lock acquired
 
         // Check if writer is done.
-        if(done == true) break;
+        if (done.load()) break;
 
         // Read the shared data
         std::cout << "Reader " << id << " reads: " << shared_resource << std::endl;
@@ -40,7 +42,8 @@ void writer(int id)
         // Check if all data has been written
         if(shared_resource == 20)
         {
-            done = true;
+            // Signal readers that writing is done
+            done.store(true);
             break;
         }
 
