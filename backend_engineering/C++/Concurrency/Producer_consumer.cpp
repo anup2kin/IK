@@ -10,7 +10,7 @@ std::mutex mtx; // Mutex for shared buffer
 std::condition_variable cv; // Condition variable for synchronization
 std::queue<int> buffer;
 const size_t buffer_size = 5; // Maximum buffer size
-bool done = false; // Single to indicated completion from producer
+bool done = false; // Variable to indicated completion from producer
 
 // Producer function
 void producer()
