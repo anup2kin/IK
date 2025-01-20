@@ -4,16 +4,25 @@
 #include <unordered_map>
 #include <functional>
 
+/*
+    key points:
+    1. This is read-heavy data structure. Hence, we should use reader-writer lock i.e. shared mutex.
+    1. Do not have global lock for writting since this will lock the entire data structure.
+    2. Use lock stripping to have granular writting capability by using bucket.
+*/
+
 template <typename Key_type, typename Value_type>
 class Bucket
 {
 public:
     void put(const Key_type &key, const Value_type &value){
+        // Acquire exlusive lock on the bucket for writting
         std::unique_lock<std::shared_mutex> lock(mtx);
         map[key] = value;
     }
 
     std::optional<Value_type> get(const Key_type &key){
+        // Acquire reader lock on the bucket
         std::shared_lock<std::shared_mutex> lock(mtx);
 
         auto it = map.find(key);
@@ -35,6 +44,7 @@ public:
     }
 
     void put(Key_type key, Value_type value){
+        // Acquire reader lock on the whole data structure.
         std::shared_lock<std::shared_mutex> buckets_reader_lock(mtx);
 
         Bucket<Key_type, Value_type> &b = buckets[get_hash(key) % buckets_size];
@@ -43,6 +53,7 @@ public:
     }
 
     std::optional<Value_type> get(Key_type key){
+        // Acquire reader lock on the whole data structure
         std::shared_lock<std::shared_mutex> buckets_reader_lock(mtx);
 
         Bucket<Key_type, Value_type> &b = buckets[get_hash(key) % buckets_size];
