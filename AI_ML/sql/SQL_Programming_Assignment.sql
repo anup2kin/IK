@@ -15,3 +15,9 @@ INNER JOIN event E ON E.eventid = S.eventid
 GROUP BY S.eventid, E.eventname
 ORDER BY SUM(S.qtysold) DESC
 LIMIT 10
+
+-- 3. Construct an SQL query to retrieve events that occurred on a specific date say ‘2008-08-21’,
+--	leveraging both the event and date tables.
+--	The query should extract event details, including names and start times, associated with the specified date.
+select * from event limit 1;
+select * from date limit 1;
