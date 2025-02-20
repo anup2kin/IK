@@ -3,6 +3,13 @@
         "__split_buffer": "cpp",
         "deque": "cpp",
         "string": "cpp",
-        "vector": "cpp"
+        "vector": "cpp",
+        "ios": "cpp",
+        "limits": "cpp",
+        "__node_handle": "cpp",
+        "new": "cpp",
+        "list": "cpp",
+        "unordered_map": "cpp",
+        "set": "cpp"
     }
 }

@@ -238,6 +238,86 @@ public:
         delete suc;
         suc = nullptr;
     }
+
+    void print_level_order(){
+        cout << "======= LEVEL ORDER TRAVERSAL ========" << endl;
+        if(root == nullptr) return;
+
+        queue<TreeNode*> q;
+        q.push(root);
+        int level = 0;
+
+        while(!empty(q)){
+            cout << level << ". ";
+            size_t size_q = size(q);
+
+            for(int i = 0; i < size_q; i++)
+            {
+                auto node = q.front();
+                q.pop();
+                cout << node->key << ", ";
+
+                if(node->left != nullptr) q.push(node->left);
+                if(node->right != nullptr) q.push(node->right);
+            }
+
+            ++level;
+            cout << endl;
+        }
+    }
+
+    void print_preorder(){
+        cout << "================ PERFORMING PREORDER TRAVERSAL=============" << endl;
+        
+        if(root == nullptr){
+            return;
+        }
+
+        print_preorder(root);
+
+        cout << endl;
+    }
+
+    void print_inorder(){
+        cout << "================ PERFORMING INORDER TRAVERSAL=============" << endl;
+       
+       if(root == nullptr){
+            return;
+        }
+
+        print_inorder(root);
+
+        cout << endl;
+    }
+
+    void print_postorder(){
+        cout << "================ PERFORMING POSTORDER TRAVERSAL=============" << endl;
+        if(root == nullptr){
+            return;
+        }
+
+        print_postorder(root);
+
+        cout << endl;
+    }
+private:
+    void print_preorder(TreeNode *root){
+        cout << root->key << " ";
+        if(root->left != nullptr) print_preorder(root->left);
+        if(root->right != nullptr) print_preorder(root->right);
+    }
+
+    void print_inorder(TreeNode *root){
+        if(root->left != nullptr) print_inorder(root->left);
+        cout << root->key << " ";
+        if(root->right != nullptr) print_inorder(root->right);
+    }
+
+    void print_postorder(TreeNode *root){
+        if(root->left != nullptr) print_inorder(root->left);
+        if(root->right != nullptr) print_inorder(root->right);
+        cout << root->key << " ";
+    }
 };
 
 int main() {
@@ -249,6 +329,16 @@ int main() {
     tree.insert(15);
     tree.insert(25);
     tree.insert(35);
+
+    cout << endl;
+    tree.print_level_order();
+    cout << endl;
+    tree.print_preorder();
+    cout << endl;
+    tree.print_inorder();
+    cout << endl;
+    tree.print_postorder();
+    cout << endl;
 
     optional<int> min_value = tree.find_min();
     if (min_value) cout << "Min value: " << *min_value << endl;
