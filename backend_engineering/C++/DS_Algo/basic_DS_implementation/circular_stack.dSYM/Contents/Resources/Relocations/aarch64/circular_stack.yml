@@ -1,0 +1,5 @@
+---
+triple:          'arm64-apple-darwin'
+binary-path:     '/Users/anupkumar/programs/IK/backend_engineering/C++/DS_Algo/basic_DS_implementation/circular_stack'
+relocations:     []
+...
