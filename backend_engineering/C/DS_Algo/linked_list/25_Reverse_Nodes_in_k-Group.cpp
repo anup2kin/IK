@@ -1,0 +1,82 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct ListNode {
+    int val;
+    ListNode *next;
+} ListNode;
+ 
+int find_length(ListNode *head){
+    int count = 0;
+    auto cur_node = head;
+    while(cur_node != NULL){
+        cur_node = cur_node->next;
+        ++count;
+    }
+
+    return count;
+}
+
+void reverse_k_nodes(ListNode *head, int k, ListNode **prevNode, ListNode **nextNode){
+    ListNode *curNode = head;
+    *prevNode = NULL;
+    *nextNode = NULL;
+
+    int count = 1;
+    while(curNode != NULL && count <= k)
+    {
+        *nextNode = curNode->next;
+        curNode->next = *prevNode;
+        *prevNode = curNode;
+        curNode = *nextNode;
+        ++count;
+    }
+}
+
+ListNode* reverseKGroup(ListNode* head, int k) {
+    // If the list is empty or just have one node, there is nothing to do
+    if(head == nullptr || head->next == nullptr) return head;
+
+    // Find the size of the linked list
+    int totalNodeCount = find_length(head);
+    int processedNodeCount = 0;
+
+    // Create a dummy node to make handling corner cases easier
+    ListNode *dummy = (ListNode *) malloc (sizeof(ListNode));
+    dummy->next = NULL;
+
+    auto ir = dummy;
+    ListNode *prevNode = NULL;
+    ListNode *curNode = head;
+    ListNode *nextNode = NULL;
+
+    while(curNode != NULL)
+    {
+        if(processedNodeCount + k <= totalNodeCount){
+            reverse_k_nodes(curNode, k, &prevNode, &nextNode);
+
+            // After reversal prev_node will point to the head of the linked list
+            // and next_node will point to the first node of next group.
+
+            // Lets link last_node_in_prev_grp to the head of the reversed linked list
+            ir->next = prevNode;
+            // Move result iterator to the tail of this reversed linked list
+            ir = curNode;
+
+            // Update the current node to be the next node returned as a result of reverse
+            curNode = nextNode;
+
+            // Update processed node count
+            processedNodeCount += k;
+        }
+        else{
+            // Just link the remaining nodes to the result list (They should not be reversed)
+            ir->next = curNode;
+            break;
+        }
+    }
+
+    head = dummy->next;
+    delete dummy;
+    return head;
+}

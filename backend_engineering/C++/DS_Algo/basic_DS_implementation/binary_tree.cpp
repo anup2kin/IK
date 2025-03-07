@@ -90,7 +90,7 @@ public:
         while(cur_node != nullptr){
             if(key == cur_node->key){
                 if(cur_node->right == nullptr){
-                    if(succ == nullptr) nullopt;
+                    if(succ == nullptr) return nullopt;
                     else return succ->key;
                 }
                 else break;
@@ -104,6 +104,8 @@ public:
                 cur_node = cur_node->right;
             }
         }
+
+        if(cur_node == nullptr) return nullopt;
 
         succ = cur_node->right;
         while(succ->left != nullptr){
@@ -122,7 +124,7 @@ public:
         while(cur_node != nullptr){
             if(key == cur_node->key){
                 if(cur_node->left == nullptr){
-                    if(pred == nullptr) nullopt;
+                    if(pred == nullptr) return nullopt;
                     else return pred->key;
                 }
                 else break;
@@ -137,9 +139,11 @@ public:
             }
         }
 
+        if(cur_node == nullptr) return nullopt;
+
         pred = cur_node->left;
         while(pred->right != nullptr){
-            pred = pred->left;
+            pred = pred->right;
         }
 
         return pred->key;
@@ -198,11 +202,9 @@ public:
         // Case 2: When the node to be delete has just one child subtree
         TreeNode *child = nullptr;
         if(cur_node->left != nullptr && cur_node->right == nullptr){
-            if(cur_node == parent->left) child = cur_node->left;
-            else child = cur_node->left;
+            child = cur_node->left;
         }
         else if(cur_node->left == nullptr && cur_node->right != nullptr){
-            if(cur_node == parent->left) child = cur_node->right;
             child = cur_node->right;
         }
 

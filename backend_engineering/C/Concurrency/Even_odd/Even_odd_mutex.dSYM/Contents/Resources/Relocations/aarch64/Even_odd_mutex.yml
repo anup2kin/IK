@@ -1,0 +1,5 @@
+---
+triple:          'arm64-apple-darwin'
+binary-path:     '/Users/anupkumar/programs/IK/backend_engineering/C/Concurrency/Even_odd/Even_odd_mutex'
+relocations:     []
+...

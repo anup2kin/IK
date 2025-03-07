@@ -10,6 +10,8 @@
         "new": "cpp",
         "list": "cpp",
         "unordered_map": "cpp",
-        "set": "cpp"
+        "set": "cpp",
+        "__config": "cpp",
+        "semaphore": "cpp"
     }
 }
